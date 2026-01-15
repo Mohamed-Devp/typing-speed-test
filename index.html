@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="icon" type="png" sizes="32x32" href="./public/images/favicon-32x32.png">
+
+    <link rel="stylesheet" href="./public/styles.css">
+
+    <title>Typing Speed Test</title>
+</head>
+<body>
+    <!-- BACKGROUND PATTERNS -->
+    <img class="pattern pattern--star-1" src="./public/images/pattern-star-1.svg" alt="">
+    <img class="pattern pattern--star-2" src="./public/images/pattern-star-2.svg" alt="">
+    
+    <!-- DESKTOP SITE HEADER -->
+    <header class="site-header site-header--desktop">
+        <h1 class="visually-hidden">Typing speed test</h1>
+        <img class="logo logo--large" src="./public/images/logo-large.svg" alt="">
+        <div class="personal-best">
+            <img class="personal-best__icon" src="./public/images/icon-personal-best.svg" alt="">
+            <p class="personal-best__content">
+                Personal best: <span class="personal-best__score">0 WPM</span>
+            </p>
+        </div>
+    </header>
+
+    <!-- MOBILE SITE HEADER -->
+    <header class="site-header site-header--mobile">
+        <h1 class="visually-hidden">Typing speed test</h1>
+        <img class="logo logo--small" src="./public/images/logo-small.svg" alt="">
+        <div class="personal-best">
+            <img class="personal-best__icon" src="./public/images/icon-personal-best.svg" alt="">
+            <p class="personal-best__content">
+                Best: <span class="personal-best__score">0 WPM</span>
+            </p>
+        </div>
+    </header>
+
+    <!-- SITE MAIN CONTENT -->
+    <main>
+        <!-- MENU -->
+        <div class="menu">
+            <!-- LIVE STATISTICS -->
+            <div class="menu__stats">
+                <div class="menu__stat">
+                    <p class="menu__label">WPM:</p>
+                    <p class="menu__value">0</p>
+                </div>
+                <div class="menu__divider"></div>
+                <div class="menu__stat menu__stat--accuracy is-perfect">
+                    <p class="menu__label">Accuracy:</p>
+                    <p class="menu__value">100%</p>
+                </div>
+                <div class="menu__divider"></div>
+                <div class="menu__stat menu__stat--time">
+                    <p class="menu__label">Time:</p>
+                    <p class="menu__value">0:00</p>
+                </div>
+            </div>
+
+            <!-- DESKTOP SETTINGS -->
+            <div class="menu__settings-desktop">
+                <fieldset class="menu__setting">
+                    <legend class="visually-hidden">Select a difficulty:</legend>
+                    <p class="menu__label" aria-hidden="true">Difficulty:</p>
+                    <label class="btn btn--select">
+                        <input class="visually-hidden" type="radio" name="difficulty-desktop" value="easy" checked>
+                        Easy
+                    </label>
+                    <label class="btn btn--select">
+                        <input class="visually-hidden" type="radio" name="difficulty-desktop" value="medium">
+                        Medium
+                    </label>
+                    <label class="btn btn--select">
+                        <input class="visually-hidden" type="radio" name="difficulty-desktop" value="hard">
+                        Hard
+                    </label>
+                </fieldset>
+                <div class="menu__divider"></div>
+                <fieldset class="menu__setting">
+                    <legend class="visually-hidden">Select a mode:</legend>
+                    <p class="menu__label" aria-hidden="true">Mode:</p>
+                    <label class="btn btn--select">
+                        <input class="visually-hidden" type="radio" name="mode-desktop" value="60" checked>
+                        Timed (60s)
+                    </label>
+                    <label class="btn btn--select">
+                        <input class="visually-hidden" type="radio" name="mode-desktop" value="0">
+                        Passage
+                    </label>
+                </fieldset>
+            </div>
+
+            <!-- MOBILE SETTINGS -->
+            <div class="menu__settings-mobile">
+                <div class="dropdown">
+                    <button class="dropdown__toggle" aria-expanded="false" aria-controls="difficulty-options">
+                        <span class="dropdown__value">Easy</span>
+                        <img class="dropdown__icon" src="./public/images/icon-down-arrow.svg" alt="">
+                    </button>
+                    <fieldset id="difficulty-options" class="dropdown__options">
+                        <legend class="visually-hidden">Select a difficulty:</legend>
+                        <label class="dropdown__option">
+                            <span class="btn btn--radio">
+                                <input class="visually-hidden" type="radio" name="difficulty-mobile" value="easy" checked>
+                            </span>
+                            Easy
+                        </label>
+                        <div class="dropdown__divider"></div>
+                        <label class="dropdown__option">
+                            <span class="btn btn--radio">
+                                <input class="visually-hidden" type="radio" name="difficulty-mobile" value="medium">
+                            </span>
+                            Medium
+                        </label>
+                        <div class="dropdown__divider"></div>
+                        <label class="dropdown__option">
+                            <span class="btn btn--radio">
+                                <input class="visually-hidden" type="radio" name="difficulty-mobile" value="hard">
+                            </span>
+                            Hard
+                        </label>
+                    </fieldset>
+                </div>
+                <div class="dropdown">
+                    <button class="dropdown__toggle" aria-expanded="false" aria-controls="mode-options">
+                        <span class="dropdown__value">Timed (60s)</span>
+                        <img class="dropdown__icon" src="./public/images/icon-down-arrow.svg" alt="">
+                    </button>
+                    <fieldset id="mode-options" class="dropdown__options">
+                        <legend class="visually-hidden">Select a mode:</legend>
+                        <label class="dropdown__option">
+                            <span class="btn btn--radio">
+                                <input class="visually-hidden" type="radio" name="mode-mobile" value="60" checked>
+                            </span>
+                            Timed (60s)
+                        </label>
+                        <div class="dropdown__divider"></div>
+                        <label class="dropdown__option">
+                            <span class="btn btn--radio">
+                                <input class="visually-hidden" type="radio" name="mode-mobile" value="0">
+                            </span>
+                            Passage
+                        </label>
+                    </fieldset>
+                </div>
+            </div>
+        </div>
+
+        <!-- PASSAGE -->
+        <div class="passage">
+            <p class="passage__content"></p>
+            <p class="passage__content passage__content--measurer" aria-hidden="true"></p>
+            <div class="passage__intro">
+                <img class="passage__icon passage__icon--arrow" src="./public/images/arrow-pointer.svg" alt="">
+                <img class="passage__icon passage__icon--hand" src="./public/images/hand-pointer.svg" alt="">
+                Click the text and start typing
+            </div>
+            <label class="visually-hidden">
+                <textarea name="passage"></textarea>
+                Start typing
+            </label>
+            <div class="passage__loader"></div>
+        </div>
+
+        <!-- RESULTS -->
+        <div class="results results--complete">
+            <img class="results__icon results__icon--completed" src="./public/images/icon-completed.svg" alt="">
+            <div class="results__content">
+                <h2 class="results__heading">Test Complete!</h2>
+                <p class="results__summary">
+                    Solid run. Keep pushing to beat your high score.
+                </p>
+            </div>
+            <div class="results__stats">
+                <div class="results__stat">
+                    <p class="results__label">WPM:</p>
+                    <p class="results__value">0</p>
+                </div>
+                <div class="results__stat results__stat--accuracy is-perfect">
+                    <p class="results__label">Accuracy:</p>
+                    <p class="results__value">100%</p>
+                </div>
+                <div class="results__stat results__stat--characters">
+                    <p class="results__label">Characters</p>
+                    <p class="results__value">
+                        <span class="results__correct">0</span>/<span class="results__incorrect">0</span>
+                    </p>
+                </div>
+            </div>
+            <button class="btn btn--secondary btn--secondary-light">
+                Go Again
+                <img src="./public/images/icon-restart-dark.svg" alt="">
+            </button>
+        </div>
+
+        <!-- RESULTS - NEW PERSONAL BEST -->
+        <div class="results results--new-best">
+            <img class="results__icon results__icon--new-best" src="./public/images/icon-new-pb.svg" alt="">
+            <div class="results__content">
+                <h2 class="results__heading">High Score Smashed!</h2>
+                <p class="results__summary">
+                    You’re getting faster. That was incredible typing.
+                </p>
+            </div>
+            <div class="results__stats">
+                <div class="results__stat">
+                    <p class="results__label">WPM:</p>
+                    <p class="results__value">0</p>
+                </div>
+                <div class="results__stat results__stat--accuracy is-perfect">
+                    <p class="results__label">Accuracy:</p>
+                    <p class="results__value">100%</p>
+                </div>
+                <div class="results__stat results__stat--characters">
+                    <p class="results__label">Characters</p>
+                    <p class="results__value">
+                        <span class="results__correct">0</span>/<span class="results__incorrect">0</span>
+                    </p>
+                </div>
+            </div>
+            <button class="btn btn--secondary btn--secondary-light">
+                Beat This Score
+                <img src="./public/images/icon-restart-dark.svg" alt="">
+            </button>
+        </div>
+
+        <!-- RESULTS - FIRST TEST -->
+        <div class="results results--first-test">
+            <img class="results__icon results__icon--completed" src="./public/images/icon-completed.svg" alt="">
+            <div class="results__content">
+                <h2 class="results__heading">Baseline Established!</h2>
+                <p class="results__summary">
+                    You’ve set the bar. Now the real challenge begins—time to beat it.
+                </p>
+            </div>
+            <div class="results__stats">
+                <div class="results__stat">
+                    <p class="results__label">WPM:</p>
+                    <p class="results__value">0</p>
+                </div>
+                <div class="results__stat results__stat--accuracy is-perfect">
+                    <p class="results__label">Accuracy:</p>
+                    <p class="results__value">100%</p>
+                </div>
+                <div class="results__stat results__stat--characters">
+                    <p class="results__label">Characters</p>
+                    <p class="results__value">
+                        <span class="results__correct">0</span>/<span class="results__incorrect">0</span>
+                    </p>
+                </div>
+            </div>
+            <button class="btn btn--secondary btn--secondary-light">
+                Beat This Score
+                <img src="./public/images/icon-restart-dark.svg" alt="">
+            </button>
+        </div>
+    </main>
+
+    <!-- SITE FOOTER -->
+    <footer class="site-footer">
+        <button class="btn btn--secondary btn--secondary-dark">
+            Restart Test
+            <img src="./public/images/icon-restart-light.svg" alt="">
+        </button>
+    </footer>
+
+    <script src="./public/index.js"></script>
+</body>
+</html>
