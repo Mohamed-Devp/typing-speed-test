@@ -1,0 +1,176 @@
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@100..800&display=swap');
+
+:root {
+    /* =====  Color ===== */
+    --neutral-0: 0 0% 100%;
+    --neutral-400: 240 1% 59%;
+    --neutral-500: 240 3% 46%;
+    --neutral-700: 0 0% 23%;
+    --neutral-800: 0 0% 15%;
+    --neutral-900: 0 0% 7%;
+    --blue-400: 210 100% 65%;
+    --blue-600: 214 100% 55%;
+    --red-500: 354 63% 57%;
+    --green-500: 140 63% 57%;
+    --yellow-400: 49 85% 70%;
+
+    /* =====  Typography ===== */
+    --font-family-primary: "Sora";
+
+    --font-weight-regular: 400;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+
+    --text-preset-1-font-size: 4.0rem;
+    --text-preset-1-font-weight: var(--font-weight-bold);
+    --text-preset-1-line-height: 1.36;
+    --text-preset-1-letter-spacing: 0.4px;
+    
+    --text-preset-1-mobile-font-size: 2.4rem;
+    --text-preset-1-mobile-line-height: 1.2;
+    --text-preset-1-mobile-letter-spacing: 0.32px;
+
+    --text-preset-1-regular-font-size: 4.0rem;
+    --text-preset-1-regular-font-weight: var(--font-weight-regular);
+    --text-preset-1-regular-line-height: 1.36;
+    --text-preset-1-regular-letter-spacing: 0.4px;
+
+    --text-preset-1-regular-mobile-font-size: 3.2rem;
+    --text-preset-1-regular-mobile-line-height: 1.36;
+    --text-preset-1-regular-mobile-letter-spacing: 0.4px;
+
+    --text-preset-2-font-size: 2.4rem;
+    --text-preset-2-font-weight: var(--font-weight-bold);
+    --text-preset-2-line-height: 1;
+    --text-preset-2-letter-spacing: 0;
+
+    --text-preset-3-font-size: 2.0rem;
+    --text-preset-3-font-weight: var(--font-weight-regular);
+    --text-preset-3-line-height: 1.2;
+    --text-preset-3-letter-spacing: -0.6px;
+
+    --text-preset-3-mobile-font-size: 1.6rem;
+    --text-preset-3-mobile-line-height: 1.2;
+    --text-preset-3-mobile-letter-spacing: -0.48px;
+
+    --text-preset-3-semibold-font-size: 2.0rem;
+    --text-preset-3-semibold-font-weight: var(--font-weight-semibold);
+    --text-preset-3-semibold-line-height: 1.2;
+    --text-preset-3-semibold-letter-spacing: -0.3px;
+
+    --text-preset-4-font-size: 1.8rem;
+    --text-preset-4-font-weight: var(--font-weight-regular);
+    --text-preset-4-line-height: 1.2;
+    --text-preset-4-letter-spacing: -0.6px;
+
+    --text-preset-5-font-size: 1.6rem;
+    --text-preset-5-font-weight: var(--font-weight-regular);
+    --text-preset-5-line-height: 1.2;
+    --text-preset-5-letter-spacing: -0.48px;
+
+    --text-preset-6-font-size: 1.2rem;
+    --text-preset-6-font-weight: var(--font-weight-regular);
+    --text-preset-6-line-height: 1.2;
+    --text-preset-6-letter-spacing: 0;
+
+    /* =====  Spacing ===== */
+    --spacing-25: 0.2rem;
+    --spacing-50: 0.4rem;
+    --spacing-75: 0.6rem;
+    --spacing-100: 0.8rem;
+    --spacing-125: 1.0rem;
+    --spacing-150: 1.2rem;
+    --spacing-200: 1.6rem;
+    --spacing-250: 2.0rem;
+    --spacing-300: 2.4rem;
+    --spacing-400: 3.2rem;
+    --spacing-500: 4.0rem;
+    --spacing-600: 4.8rem;
+    --spacing-800: 6.4rem;
+    --spacing-1000: 8.0rem;
+    --spacing-1200: 9.6rem;
+    --spacing-1400: 11.2rem;
+    --spacing-1600: 12.8rem;
+    --spacing-1800: 14.0rem;
+
+    /* =====  Radius ===== */
+    --radius-4: 4px;
+    --radius-6: 6px;
+    --radius-8: 8px;
+    --radius-10: 10px;
+    --radius-12: 12px;
+    --radius-16: 16px;
+    --radius-20: 20px;
+    --radius-24: 24px;
+    --radius-full: 999px;
+}
+
+/*
+  =========================
+  UTILITIES
+  =========================
+*/
+.text-preset-1 {
+    font-size: var(--text-preset-1-font-size);
+    font-weight: var(--text-preset-1-font-weight);
+    line-height: var(--text-preset-1-line-height);
+    letter-spacing: var(--text-preset-1-letter-spacing);
+}
+
+.text-preset-1-regular {
+    font-size: var(--text-preset-1-regular-font-size);
+    font-weight: var(--text-preset-1-regular-font-weight);
+    line-height: var(--text-preset-1-regular-line-height);
+    letter-spacing: var(--text-preset-1-regular-letter-spacing);
+}
+
+.text-preset-2 {
+    font-size: var(--text-preset-2-font-size);
+    font-weight: var(--text-preset-2-font-weight);
+    line-height: var(--text-preset-2-line-height);
+    letter-spacing: var(--text-preset-2-letter-spacing);
+}
+
+.text-preset-3 {
+    font-size: var(--text-preset-3-font-size);
+    font-weight: var(--text-preset-3-font-weight);
+    line-height: var(--text-preset-3-line-height);
+    letter-spacing: var(--text-preset-3-letter-spacing);
+}
+
+.text-preset-3-semibold {
+    font-size: var(--text-preset-3-semibold-font-size);
+    font-weight: var(--text-preset-3-semibold-font-weight);
+    line-height: var(--text-preset-3-semibold-line-height);
+    letter-spacing: var(--text-preset-3-semibold-letter-spacing);
+}
+
+.text-preset-4 {
+    font-size: var(--text-preset-4-font-size);
+    font-weight: var(--text-preset-4-font-weight);
+    line-height: var(--text-preset-4-line-height);
+    letter-spacing: var(--text-preset-4-letter-spacing);
+}
+
+.text-preset-5 {
+    font-size: var(--text-preset-5-font-size);
+    font-weight: var(--text-preset-5-font-weight);
+    line-height: var(--text-preset-5-line-height);
+    letter-spacing: var(--text-preset-5-letter-spacing);
+}
+
+.text-preset-6 {
+    font-size: var(--text-preset-6-font-size);
+    font-weight: var(--text-preset-6-font-weight);
+    line-height: var(--text-preset-6-line-height);
+    letter-spacing: var(--text-preset-6-letter-spacing);
+}
+
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(100%);
+    pointer-events: none;
+}
