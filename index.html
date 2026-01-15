@@ -21,7 +21,7 @@
         <img class="logo logo--large" src="./public/images/logo-large.svg" alt="">
         <div class="personal-best">
             <img class="personal-best__icon" src="./public/images/icon-personal-best.svg" alt="">
-            <p class="personal-best__content">
+            <p class="personal-best__content text-preset-4">
                 Personal best: <span class="personal-best__score">0 WPM</span>
             </p>
         </div>
@@ -33,7 +33,7 @@
         <img class="logo logo--small" src="./public/images/logo-small.svg" alt="">
         <div class="personal-best">
             <img class="personal-best__icon" src="./public/images/icon-personal-best.svg" alt="">
-            <p class="personal-best__content">
+            <p class="personal-best__content text-preset-3">
                 Best: <span class="personal-best__score">0 WPM</span>
             </p>
         </div>
@@ -46,18 +46,18 @@
             <!-- LIVE STATISTICS -->
             <div class="menu__stats">
                 <div class="menu__stat">
-                    <p class="menu__label">WPM:</p>
-                    <p class="menu__value">0</p>
+                    <p class="menu__label text-preset-3">WPM:</p>
+                    <p class="menu__value text-preset-2">0</p>
                 </div>
                 <div class="menu__divider"></div>
                 <div class="menu__stat menu__stat--accuracy is-perfect">
-                    <p class="menu__label">Accuracy:</p>
-                    <p class="menu__value">100%</p>
+                    <p class="menu__label text-preset-3">Accuracy:</p>
+                    <p class="menu__value text-preset-2">100%</p>
                 </div>
                 <div class="menu__divider"></div>
                 <div class="menu__stat menu__stat--time">
-                    <p class="menu__label">Time:</p>
-                    <p class="menu__value">0:00</p>
+                    <p class="menu__label text-preset-3">Time:</p>
+                    <p class="menu__value text-preset-2">0:00</p>
                 </div>
             </div>
 
@@ -65,16 +65,16 @@
             <div class="menu__settings-desktop">
                 <fieldset class="menu__setting">
                     <legend class="visually-hidden">Select a difficulty:</legend>
-                    <p class="menu__label" aria-hidden="true">Difficulty:</p>
-                    <label class="btn btn--select">
+                    <p class="menu__label text-preset-5" aria-hidden="true">Difficulty:</p>
+                    <label class="btn btn--select text-preset-5">
                         <input class="visually-hidden" type="radio" name="difficulty-desktop" value="easy" checked>
                         Easy
                     </label>
-                    <label class="btn btn--select">
+                    <label class="btn btn--select text-preset-5">
                         <input class="visually-hidden" type="radio" name="difficulty-desktop" value="medium">
                         Medium
                     </label>
-                    <label class="btn btn--select">
+                    <label class="btn btn--select text-preset-5">
                         <input class="visually-hidden" type="radio" name="difficulty-desktop" value="hard">
                         Hard
                     </label>
@@ -82,12 +82,12 @@
                 <div class="menu__divider"></div>
                 <fieldset class="menu__setting">
                     <legend class="visually-hidden">Select a mode:</legend>
-                    <p class="menu__label" aria-hidden="true">Mode:</p>
-                    <label class="btn btn--select">
+                    <p class="menu__label text-preset-5" aria-hidden="true">Mode:</p>
+                    <label class="btn btn--select text-preset-5">
                         <input class="visually-hidden" type="radio" name="mode-desktop" value="60" checked>
                         Timed (60s)
                     </label>
-                    <label class="btn btn--select">
+                    <label class="btn btn--select text-preset-5">
                         <input class="visually-hidden" type="radio" name="mode-desktop" value="0">
                         Passage
                     </label>
@@ -98,26 +98,26 @@
             <div class="menu__settings-mobile">
                 <div class="dropdown">
                     <button class="dropdown__toggle" aria-expanded="false" aria-controls="difficulty-options">
-                        <span class="dropdown__value">Easy</span>
+                        <span class="dropdown__value text-preset-5">Easy</span>
                         <img class="dropdown__icon" src="./public/images/icon-down-arrow.svg" alt="">
                     </button>
                     <fieldset id="difficulty-options" class="dropdown__options">
                         <legend class="visually-hidden">Select a difficulty:</legend>
-                        <label class="dropdown__option">
+                        <label class="dropdown__option text-preset-5">
                             <span class="btn btn--radio">
                                 <input class="visually-hidden" type="radio" name="difficulty-mobile" value="easy" checked>
                             </span>
                             Easy
                         </label>
                         <div class="dropdown__divider"></div>
-                        <label class="dropdown__option">
+                        <label class="dropdown__option text-preset-5">
                             <span class="btn btn--radio">
                                 <input class="visually-hidden" type="radio" name="difficulty-mobile" value="medium">
                             </span>
                             Medium
                         </label>
                         <div class="dropdown__divider"></div>
-                        <label class="dropdown__option">
+                        <label class="dropdown__option text-preset-5">
                             <span class="btn btn--radio">
                                 <input class="visually-hidden" type="radio" name="difficulty-mobile" value="hard">
                             </span>
@@ -127,19 +127,19 @@
                 </div>
                 <div class="dropdown">
                     <button class="dropdown__toggle" aria-expanded="false" aria-controls="mode-options">
-                        <span class="dropdown__value">Timed (60s)</span>
+                        <span class="dropdown__value text-preset-5">Timed (60s)</span>
                         <img class="dropdown__icon" src="./public/images/icon-down-arrow.svg" alt="">
                     </button>
                     <fieldset id="mode-options" class="dropdown__options">
                         <legend class="visually-hidden">Select a mode:</legend>
-                        <label class="dropdown__option">
+                        <label class="dropdown__option text-preset-5">
                             <span class="btn btn--radio">
                                 <input class="visually-hidden" type="radio" name="mode-mobile" value="60" checked>
                             </span>
                             Timed (60s)
                         </label>
                         <div class="dropdown__divider"></div>
-                        <label class="dropdown__option">
+                        <label class="dropdown__option text-preset-5">
                             <span class="btn btn--radio">
                                 <input class="visually-hidden" type="radio" name="mode-mobile" value="0">
                             </span>
@@ -152,9 +152,9 @@
 
         <!-- PASSAGE -->
         <div class="passage">
-            <p class="passage__content"></p>
-            <p class="passage__content passage__content--measurer" aria-hidden="true"></p>
-            <div class="passage__intro">
+            <p class="passage__content text-preset-1-regular"></p>
+            <p class="passage__content passage__content--measurer text-preset-1-regular" aria-hidden="true"></p>
+            <div class="passage__intro text-preset-3-semibold">
                 <img class="passage__icon passage__icon--arrow" src="./public/images/arrow-pointer.svg" alt="">
                 <img class="passage__icon passage__icon--hand" src="./public/images/hand-pointer.svg" alt="">
                 Click the text and start typing
@@ -170,30 +170,30 @@
         <div class="results results--complete">
             <img class="results__icon results__icon--completed" src="./public/images/icon-completed.svg" alt="">
             <div class="results__content">
-                <h2 class="results__heading">Test Complete!</h2>
-                <p class="results__summary">
+                <h2 class="results__heading text-preset-1">Test Complete!</h2>
+                <p class="results__summary text-preset-3">
                     Solid run. Keep pushing to beat your high score.
                 </p>
             </div>
             <div class="results__stats">
                 <div class="results__stat">
-                    <p class="results__label">WPM:</p>
-                    <p class="results__value">0</p>
+                    <p class="results__label text-preset-3">WPM:</p>
+                    <p class="results__value text-preset-2">0</p>
                 </div>
                 <div class="results__stat results__stat--accuracy is-perfect">
-                    <p class="results__label">Accuracy:</p>
-                    <p class="results__value">100%</p>
+                    <p class="results__label text-preset-3">Accuracy:</p>
+                    <p class="results__value text-preset-2">100%</p>
                 </div>
                 <div class="results__stat results__stat--characters">
-                    <p class="results__label">Characters</p>
-                    <p class="results__value">
+                    <p class="results__label text-preset-3">Characters</p>
+                    <p class="results__value text-preset-2">
                         <span class="results__correct">0</span>/<span class="results__incorrect">0</span>
                     </p>
                 </div>
             </div>
-            <button class="btn btn--secondary btn--secondary-light">
+            <button class="btn btn--secondary btn--secondary-light text-preset-3-semibold">
                 Go Again
-                <img src="./public/images/icon-restart-dark.svg" alt="">
+                <img class="restart-icon" src="./public/images/icon-restart-dark.svg" alt="">
             </button>
         </div>
 
@@ -201,30 +201,30 @@
         <div class="results results--new-best">
             <img class="results__icon results__icon--new-best" src="./public/images/icon-new-pb.svg" alt="">
             <div class="results__content">
-                <h2 class="results__heading">High Score Smashed!</h2>
-                <p class="results__summary">
+                <h2 class="results__heading text-preset-1">High Score Smashed!</h2>
+                <p class="results__summary text-preset-3">
                     You’re getting faster. That was incredible typing.
                 </p>
             </div>
             <div class="results__stats">
                 <div class="results__stat">
-                    <p class="results__label">WPM:</p>
-                    <p class="results__value">0</p>
+                    <p class="results__label text-preset-3">WPM:</p>
+                    <p class="results__value text-preset-2">0</p>
                 </div>
                 <div class="results__stat results__stat--accuracy is-perfect">
-                    <p class="results__label">Accuracy:</p>
-                    <p class="results__value">100%</p>
+                    <p class="results__label text-preset-3">Accuracy:</p>
+                    <p class="results__value text-preset-2">100%</p>
                 </div>
                 <div class="results__stat results__stat--characters">
-                    <p class="results__label">Characters</p>
-                    <p class="results__value">
+                    <p class="results__label text-preset-3">Characters</p>
+                    <p class="results__value text-preset-2">
                         <span class="results__correct">0</span>/<span class="results__incorrect">0</span>
                     </p>
                 </div>
             </div>
-            <button class="btn btn--secondary btn--secondary-light">
+            <button class="btn btn--secondary btn--secondary-light text-preset-3-semibold">
                 Beat This Score
-                <img src="./public/images/icon-restart-dark.svg" alt="">
+                <img class="restart-icon" src="./public/images/icon-restart-dark.svg" alt="">
             </button>
         </div>
 
@@ -232,39 +232,39 @@
         <div class="results results--first-test">
             <img class="results__icon results__icon--completed" src="./public/images/icon-completed.svg" alt="">
             <div class="results__content">
-                <h2 class="results__heading">Baseline Established!</h2>
-                <p class="results__summary">
+                <h2 class="results__heading text-preset-1">Baseline Established!</h2>
+                <p class="results__summary text-preset-3">
                     You’ve set the bar. Now the real challenge begins—time to beat it.
                 </p>
             </div>
             <div class="results__stats">
                 <div class="results__stat">
-                    <p class="results__label">WPM:</p>
-                    <p class="results__value">0</p>
+                    <p class="results__label text-preset-3">WPM:</p>
+                    <p class="results__value text-preset-2">0</p>
                 </div>
                 <div class="results__stat results__stat--accuracy is-perfect">
-                    <p class="results__label">Accuracy:</p>
-                    <p class="results__value">100%</p>
+                    <p class="results__label text-preset-3">Accuracy:</p>
+                    <p class="results__value text-preset-2">100%</p>
                 </div>
                 <div class="results__stat results__stat--characters">
-                    <p class="results__label">Characters</p>
-                    <p class="results__value">
+                    <p class="results__label text-preset-3">Characters</p>
+                    <p class="results__value text-preset-2">
                         <span class="results__correct">0</span>/<span class="results__incorrect">0</span>
                     </p>
                 </div>
             </div>
-            <button class="btn btn--secondary btn--secondary-light">
+            <button class="btn btn--secondary btn--secondary-light text-preset-3-semibold">
                 Beat This Score
-                <img src="./public/images/icon-restart-dark.svg" alt="">
+                <img class="restart-icon" src="./public/images/icon-restart-dark.svg" alt="">
             </button>
         </div>
     </main>
 
     <!-- SITE FOOTER -->
     <footer class="site-footer">
-        <button class="btn btn--secondary btn--secondary-dark">
+        <button class="btn btn--secondary btn--secondary-dark text-preset-3-semibold">
             Restart Test
-            <img src="./public/images/icon-restart-light.svg" alt="">
+            <img class="restart-icon" src="./public/images/icon-restart-light.svg" alt="">
         </button>
     </footer>
 
