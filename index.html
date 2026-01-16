@@ -96,9 +96,9 @@
 
             <!-- MOBILE SETTINGS -->
             <div class="menu__settings-mobile">
-                <div class="dropdown">
-                    <button class="dropdown__toggle" aria-expanded="false" aria-controls="difficulty-options">
-                        <span class="dropdown__value text-preset-5">Easy</span>
+                <div class="dropdown" data-difficulty-dropdown>
+                    <button class="dropdown__toggle" aria-expanded="false" aria-controls="difficulty-options" data-toggle-btn>
+                        <span class="dropdown__value text-preset-5" data-value>Easy</span>
                         <img class="dropdown__icon" src="./public/images/icon-down-arrow.svg" alt="">
                     </button>
                     <fieldset id="difficulty-options" class="dropdown__options">
@@ -125,9 +125,9 @@
                         </label>
                     </fieldset>
                 </div>
-                <div class="dropdown">
-                    <button class="dropdown__toggle" aria-expanded="false" aria-controls="mode-options">
-                        <span class="dropdown__value text-preset-5">Timed (60s)</span>
+                <div class="dropdown" data-mode-dropdown>
+                    <button class="dropdown__toggle" aria-expanded="false" aria-controls="mode-options" data-toggle-btn>
+                        <span class="dropdown__value text-preset-5" data-value>Timed (60s)</span>
                         <img class="dropdown__icon" src="./public/images/icon-down-arrow.svg" alt="">
                     </button>
                     <fieldset id="mode-options" class="dropdown__options">
@@ -152,8 +152,8 @@
 
         <!-- PASSAGE -->
         <div class="passage">
-            <p class="passage__content text-preset-1-regular"></p>
-            <p class="passage__content passage__content--measurer text-preset-1-regular" aria-hidden="true"></p>
+            <p class="passage__content text-preset-1-regular" data-passage-content></p>
+            <p class="passage__content passage__content--measurer text-preset-1-regular" aria-hidden="true" data-passage-measurer></p>
             <div class="passage__intro text-preset-3-semibold">
                 <img class="passage__icon passage__icon--arrow" src="./public/images/arrow-pointer.svg" alt="">
                 <img class="passage__icon passage__icon--hand" src="./public/images/hand-pointer.svg" alt="">
