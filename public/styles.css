@@ -395,6 +395,7 @@ img {
     width: 1.0rem;
     height: auto;
     object-fit: contain;
+    transition: transform 0.15s ease-in;
 }
 
 .dropdown__options {
@@ -403,13 +404,13 @@ img {
     right: 0;
     top: 100%;
     z-index: 10;
-    transform: translateY(0.8rem);
     display: none;
     flex-direction: column;
     gap: var(--spacing-100);
     padding: var(--spacing-125) 0;
     border-radius: var(--radius-8);
     background-color: hsl(var(--neutral-800));
+    animation: slideDownFadeIn 0.15s ease-in forwards;
 }
 
 .dropdown__option {
@@ -828,6 +829,11 @@ img {
     40% { background-position: 0% 100%, 50%   0%, 100%  50%; }
     60% { background-position: 0%  50%, 50% 100%, 100%   0%; }
     80% { background-position: 0%  50%, 50%  50%, 100% 100%; }
+}
+
+@keyframes slideDownFadeIn {
+    from { transform: translateY(0.2rem); opacity: 0; }
+    to   { transform: translateY(0.8rem); opacity: 1; }
 }
 
 /*
