@@ -1,3 +1,8 @@
+const WPMValueEl = document.querySelector('[data-wpm] [data-value]');
+
+const accuracyEl = document.querySelector('[data-accuracy]');
+const accuracyValueEl = document.querySelector('[data-accuracy] [data-value]');
+
 const timeValueEl = document.querySelector('[data-time] [data-value]');
 
 const difficultyDesktopRadios = document.querySelectorAll('input[name="difficulty-desktop"]');
@@ -34,6 +39,9 @@ let currentChar = 0;
 let previous = '';
 let correctChars = 0;
 let incorrectChars = 0;
+
+let wordsPerMinute = 0;
+let accuracy = 100;
 
 /* ===== Split the given text into lines based on how it's rendered in a container ===== */
 function measureLines(text, measurer) {
@@ -94,7 +102,7 @@ function createPassageView() {
 
 /* ===== Show the current visible lines of the selected passage content ===== */
 function updatePassageView() {
-    if (lines.length - currentLine <= VISIBLE_LINES) return;
+    if (lines.length - currentLine < VISIBLE_LINES) return;
     
     const endLine = currentLine + VISIBLE_LINES;
     
@@ -153,7 +161,8 @@ function startTimer() {
     timerId = setInterval(() => {
         elapsed += 1;
         
-        updateTimeView(duration > 0 ? duration - elapsed : elapsed);
+        updateStats();
+        updateStatsView();
         
         if (elapsed === duration) {
             clearTimer();
@@ -216,6 +225,7 @@ function handleBackspace() {
         }
         else {
             currentChar = lines[currentLine].length - 1;
+            updatePassageView();
         }
     }
   
@@ -231,6 +241,30 @@ function handleBackspace() {
     }
 }
 
+function updateStats() {
+    const words = correctChars / 5;
+    const elapsedMinutes = elapsed / 60;
+
+    const totalChars = correctChars + incorrectChars;
+
+    wordsPerMinute = Math.floor(words / elapsedMinutes);
+    accuracy = totalChars > 0 ? Math.floor(correctChars / totalChars * 100) : 0;
+}
+
+function updateStatsView() {
+    WPMValueEl.textContent = wordsPerMinute > 0 ? String(wordsPerMinute).padStart(3, '0') : 0;
+
+    if (accuracy === 100) {
+        accuracyEl.classList.add('is-perfect');
+    }
+    else {
+        accuracyEl.classList.remove('is-perfect');
+    }
+    accuracyValueEl.textContent = `${accuracy > 0 ? String(accuracy).padStart(3, '0') : 0}%`;
+
+    updateTimeView(duration > 0 ? duration - elapsed : elapsed);
+}
+
 function startNewTest() {
     elapsed = 0;
 
@@ -241,9 +275,15 @@ function startNewTest() {
     correctChars = 0;
     incorrectChars = 0;
 
+    wordsPerMinute = 0;
+    accuracy = 100;
+
     document.body.classList.remove('has-started');
 
-    updateTimeView(duration);
+    passageTextarea.value = '';
+
+    updateStatsView();
+
     updatePassage().catch(error => {
         console.error(error.message);
     });

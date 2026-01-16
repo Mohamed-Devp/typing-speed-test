@@ -988,7 +988,8 @@ img {
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .btn, .dropdown__toggle {
+    .btn, .dropdown__toggle, .dropdown__icon, .dropdown__options {
         transition: none;
+        animation: none;
     }
 }
