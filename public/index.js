@@ -12,8 +12,121 @@ const modeDropdown = document.querySelector('[data-mode-dropdown]');
 const modeToggleBtn = document.querySelector('[data-mode-dropdown] [data-toggle-btn]');
 const modeValueEl = document.querySelector('[data-mode-dropdown] [data-value]');
 
+const passageContentEl = document.querySelector('[data-passage-content]');
+const passageMeasurer = document.querySelector('[data-passage-measurer]');
+
+const VISIBLE_LINES = 12;
+
 let difficulty = 'easy';
 let duration = 60;
+
+let lines;
+let currentLine = 0;
+let currentChar = 0;
+
+/* ===== Split the given text into lines based on how it's rendered in a container ===== */
+function measureLines(text, measurer) {
+    measurer.innerHTML = '';
+    
+    const words = text.split(' ');
+    
+    const spans = words.map((word, index) => {
+        const span = document.createElement('span');
+        
+        if (index === words.length - 1) {
+            span.textContent = word;
+        }
+        else {
+            span.textContent = word + ' ';
+        }
+        
+        measurer.appendChild(span);
+        return span;
+    });
+  
+    const lines = [];
+    let currentLine = '';
+    let currentTop = spans[0].offsetTop;
+    
+    for (const span of spans) {
+        if (span.offsetTop !== currentTop) {
+            lines.push(currentLine);
+            currentLine = '';
+            currentTop = span.offsetTop;
+        }
+        
+        currentLine += span.textContent;
+    }
+    
+    if (currentLine.length) {
+        lines.push(currentLine);
+    }
+    
+    return lines;
+}
+
+function createPassageView() {    
+    let passageContentHTML = '';
+    
+    for (let i = 0; i < lines.length; i++) {
+        let lineContentHTML = '';
+        
+        for (let j = 0; j < lines[i].length; j++) {
+            lineContentHTML += `<span data-char="${j}">${lines[i][j]}</span>`;
+        }
+        
+        passageContentHTML += `<span data-line="${i}">${lineContentHTML}</span>`;
+    }
+    
+    passageContentEl.innerHTML = passageContentHTML;
+}
+
+/* ===== Show the current visible lines of the selected passage content ===== */
+function updatePassageView() {
+    if (lines.length - currentLine <= VISIBLE_LINES) return;
+    
+    const endLine = currentLine + VISIBLE_LINES;
+    
+    for (let i = 0; i < lines.length; i++) {
+        const lineSpan = document.querySelector(`[data-line="${i}"]`);
+        
+        if (i >= currentLine && i < endLine) {
+            lineSpan.classList.remove('visually-hidden'); 
+        }
+        else {
+            lineSpan.classList.add('visually-hidden');
+        }
+    }
+}
+
+async function updatePassage() {
+    document.body.classList.add('is-loading');
+
+    const response = await fetch('./public/data.json');
+    if (!response.ok) {
+        throw new Error(`Cannot fetch the data ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    document.body.classList.remove('is-loading');
+
+    const passages = data[difficulty];
+    const index = Math.floor(Math.random() * passages.length);
+
+    lines = measureLines(passages[index].text, passageMeasurer);
+    createPassageView();
+    updatePassageView();
+}
+
+function startNewTest() {
+    currentLine = 0;
+    currentChar = 0;
+
+    updatePassage().catch(error => {
+        console.error(error.message);
+    });
+}
 
 difficultyDesktopRadios.forEach(radio => {
     radio.addEventListener('change', () => {
@@ -26,6 +139,8 @@ difficultyDesktopRadios.forEach(radio => {
                 mobileRadio.click();
             }
         });
+
+        startNewTest(); 
     });
 });
 
@@ -46,6 +161,8 @@ difficultyMobileRadios.forEach(radio => {
                 desktopRadio.click();
             }
         });
+
+        startNewTest();
     });
 });
 
@@ -60,6 +177,8 @@ modeDesktopRadios.forEach(radio => {
                 mobileRadio.click();
             }
         });
+
+        startNewTest();
     })
 });
 
@@ -80,6 +199,8 @@ modeMobileRadios.forEach(radio => {
                 desktopRadio.click();
             }
         });
+
+        startNewTest();
     });
 });
 
@@ -108,3 +229,5 @@ document.addEventListener('click', event => {
         modeToggleBtn.setAttribute('aria-expanded', 'false');
     }
 });
+
+startNewTest();
