@@ -1,4 +1,11 @@
-const timeValueEl = document.querySelector('[data-time] [data-value]');
+const personalBestSpans = document.querySelectorAll('[data-personal-best]');
+
+const WPMSpan = document.querySelector('[data-wpm] [data-value]');
+
+const accuracyEl = document.querySelector('[data-accuracy]');
+const accuracySpan = document.querySelector('[data-accuracy] [data-value]');
+
+const timeSpan = document.querySelector('[data-time] [data-value]');
 
 const difficultyDesktopRadios = document.querySelectorAll('input[name="difficulty-desktop"]');
 const difficultyMobileRadios = document.querySelectorAll('input[name="difficulty-mobile"]');
@@ -18,6 +25,16 @@ const passageContentEl = document.querySelector('[data-passage-content]');
 const passageMeasurer = document.querySelector('[data-passage-measurer]');
 const passageTextarea = document.querySelector('textarea[name="passage"]');
 
+const resultWPMSpans = document.querySelectorAll('[data-result-wpm] [data-value]');
+
+const resultAccuracyEls = document.querySelectorAll('[data-result-accuracy]');
+const resultAccuracySpans = document.querySelectorAll('[data-result-accuracy] [data-value]');
+
+const correctCharsSpans = document.querySelectorAll('[data-characters] [data-correct]');
+const incorrectCharsSpans = document.querySelectorAll('[data-characters] [data-incorrect]');
+
+const restartBtns = document.querySelectorAll('[data-restart-btn');
+
 const VISIBLE_LINES = 12;
 
 let timerId;
@@ -34,6 +51,9 @@ let currentChar = 0;
 let previous = '';
 let correctChars = 0;
 let incorrectChars = 0;
+
+let wordsPerMinute = 0;
+let accuracy = 100;
 
 /* ===== Split the given text into lines based on how it's rendered in a container ===== */
 function measureLines(text, measurer) {
@@ -94,7 +114,7 @@ function createPassageView() {
 
 /* ===== Show the current visible lines of the selected passage content ===== */
 function updatePassageView() {
-    if (lines.length - currentLine <= VISIBLE_LINES) return;
+    if (lines.length - currentLine < VISIBLE_LINES) return;
     
     const endLine = currentLine + VISIBLE_LINES;
     
@@ -134,7 +154,7 @@ function updateTimeView(seconds) {
     const minutes = Math.floor(seconds / 60);
     const remainder = seconds % 60;
   
-    timeValueEl.textContent = `${minutes}:${String(remainder).padStart(2, '0')}`;
+    timeSpan.textContent = `${minutes}:${String(remainder).padStart(2, '0')}`;
 }
 
 function clearTimer() {
@@ -153,10 +173,12 @@ function startTimer() {
     timerId = setInterval(() => {
         elapsed += 1;
         
-        updateTimeView(duration > 0 ? duration - elapsed : elapsed);
+        updateStats();
+        updateStatsView();
         
         if (elapsed === duration) {
             clearTimer();
+            showResults();
         }
     }, 1000);
 }
@@ -193,6 +215,7 @@ function processChar(char) {
         
         if (currentLine >= lines.length) {
             clearTimer();
+            showResults();
         }
         else {
             updatePassageView();
@@ -216,6 +239,7 @@ function handleBackspace() {
         }
         else {
             currentChar = lines[currentLine].length - 1;
+            updatePassageView();
         }
     }
   
@@ -231,6 +255,83 @@ function handleBackspace() {
     }
 }
 
+function updateStats() {
+    const words = correctChars / 5;
+    const elapsedMinutes = elapsed / 60;
+
+    const totalChars = correctChars + incorrectChars;
+
+    wordsPerMinute = Math.floor(words / elapsedMinutes);
+    accuracy = totalChars > 0 ? Math.floor(correctChars / totalChars * 100) : 0;
+}
+
+function updateStatsView() {
+    WPMSpan.textContent = wordsPerMinute > 0 ? String(wordsPerMinute).padStart(3, '0') : 0;
+
+    if (accuracy === 100) {
+        accuracyEl.classList.add('is-perfect');
+    }
+    else {
+        accuracyEl.classList.remove('is-perfect');
+    }
+    accuracySpan.textContent = `${accuracy > 0 ? String(accuracy).padStart(3, '0') : 0}%`;
+
+    updateTimeView(duration > 0 ? duration - elapsed : elapsed);
+}
+
+function showResults() {
+    const currentBest = parseInt(localStorage.getItem('personal-best'));
+
+    document.body.classList.remove('has-started');
+
+    if (Number.isNaN(currentBest)) {
+        localStorage.setItem('personal-best', String(wordsPerMinute));
+        document.body.classList.add('is-first-test');
+    }
+    else if (wordsPerMinute > currentBest) {
+        localStorage.setItem('personal-best', String(wordsPerMinute));
+        document.body.classList.add('is-new-best');
+    }
+    else {
+        document.body.classList.add('is-complete');
+    }
+
+    updatePersonalBestView();
+
+    resultWPMSpans.forEach(span => {
+        span.textContent = wordsPerMinute;
+    });
+
+    resultAccuracyEls.forEach(element => {
+        if (accuracy === 100) {
+            element.classList.add('is-perfect');
+        }
+        else {
+            element.classList.remove('is-perfect');
+        }
+    });
+
+    resultAccuracySpans.forEach(span => {
+        span.textContent = `${accuracy}%`;
+    });
+
+    correctCharsSpans.forEach(span => {
+        span.textContent = correctChars;
+    });
+
+    incorrectCharsSpans.forEach(span => {
+        span.textContent = incorrectChars;
+    });
+}
+
+function updatePersonalBestView() {
+    const currentBest = parseInt(localStorage.getItem('personal-best'));
+
+    personalBestSpans.forEach(span => {
+        span.textContent = `${Number.isNaN(currentBest) ? 0 : currentBest} WPM`;
+    });
+}
+
 function startNewTest() {
     elapsed = 0;
 
@@ -241,9 +342,16 @@ function startNewTest() {
     correctChars = 0;
     incorrectChars = 0;
 
-    document.body.classList.remove('has-started');
+    wordsPerMinute = 0;
+    accuracy = 100;
 
-    updateTimeView(duration);
+    document.body.classList.remove('has-started', 'is-complete', 'is-new-best', 'is-first-test');
+
+    passageTextarea.value = '';
+
+    updateStatsView();
+    updatePersonalBestView();
+
     updatePassage().catch(error => {
         console.error(error.message);
     });
@@ -388,6 +496,10 @@ passageContentEl.addEventListener('mousedown', (e) => {
 
 passageContentEl.addEventListener('click', () => {
     passageTextarea.focus();
+});
+
+restartBtns.forEach(button => {
+    button.addEventListener('click', startNewTest);
 });
 
 document.addEventListener('click', event => {

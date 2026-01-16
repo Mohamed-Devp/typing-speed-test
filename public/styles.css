@@ -231,6 +231,9 @@ img {
     position: absolute;
     z-index: -1;
     display: none;
+}
+
+.pattern--star {
     height: auto;
     object-fit: contain;
 }
@@ -247,7 +250,19 @@ img {
     width: 32px;
 }
 
-.is-complete .pattern, .is-first-test .pattern {
+.pattern--confetti {
+    left: 0;
+    width: 100%;
+    height: 50vh;
+    object-fit: cover;
+    animation: confettiDrop 1.2s cubic-bezier(.22,1,.36,1) forwards;
+}
+
+.is-complete .pattern--star, .is-first-test .pattern--star {
+    display: block;
+}
+
+.is-new-best .pattern--confetti {
     display: block;
 }
 
@@ -825,15 +840,40 @@ img {
   =========================
 */
 @keyframes loading {
-    20% { background-position: 0%   0%, 50%  50%, 100%  50%; }
-    40% { background-position: 0% 100%, 50%   0%, 100%  50%; }
-    60% { background-position: 0%  50%, 50% 100%, 100%   0%; }
-    80% { background-position: 0%  50%, 50%  50%, 100% 100%; }
+    20% {
+        background-position: 0% 0%, 50% 50%, 100% 50%;
+    }
+    40% {
+        background-position: 0% 100%, 50% 0%, 100% 50%;
+    }
+    60% {
+        background-position: 0%  50%, 50% 100%, 100% 0%;
+    }
+    80% {
+        background-position: 0% 50%, 50% 50%, 100% 100%;
+    }
 }
 
 @keyframes slideDownFadeIn {
-    from { transform: translateY(0.2rem); opacity: 0; }
-    to   { transform: translateY(0.8rem); opacity: 1; }
+    from {
+        transform: translateY(0.2rem); 
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0.8rem); 
+        opacity: 1;
+    }
+}
+
+@keyframes confettiDrop {
+    from {
+        transform: translateY(-100%);
+        opacity: 1;
+    }
+    to {
+        transform: translateY(50%);
+        opacity: 0;
+    }
 }
 
 /*
@@ -988,7 +1028,8 @@ img {
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .btn, .dropdown__toggle {
+    .btn, .dropdown__toggle, .dropdown__icon, .dropdown__options {
         transition: none;
+        animation: none;
     }
 }

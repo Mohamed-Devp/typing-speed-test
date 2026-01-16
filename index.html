@@ -12,8 +12,9 @@
 </head>
 <body>
     <!-- BACKGROUND PATTERNS -->
-    <img class="pattern pattern--star-1" src="./public/images/pattern-star-1.svg" alt="">
-    <img class="pattern pattern--star-2" src="./public/images/pattern-star-2.svg" alt="">
+    <img class="pattern pattern--star pattern--star-1" src="./public/images/pattern-star-1.svg" alt="">
+    <img class="pattern pattern--star pattern--star-2" src="./public/images/pattern-star-2.svg" alt="">
+    <img class="pattern pattern--confetti" src="./public/images/pattern-confetti.svg" alt="">
     
     <!-- DESKTOP SITE HEADER -->
     <header class="site-header site-header--desktop">
@@ -22,7 +23,7 @@
         <div class="personal-best">
             <img class="personal-best__icon" src="./public/images/icon-personal-best.svg" alt="">
             <p class="personal-best__content text-preset-4">
-                Personal best: <span class="personal-best__score">0 WPM</span>
+                Personal best: <span class="personal-best__score" data-personal-best>0 WPM</span>
             </p>
         </div>
     </header>
@@ -34,7 +35,7 @@
         <div class="personal-best">
             <img class="personal-best__icon" src="./public/images/icon-personal-best.svg" alt="">
             <p class="personal-best__content text-preset-3">
-                Best: <span class="personal-best__score">0 WPM</span>
+                Best: <span class="personal-best__score" data-personal-best>0 WPM</span>
             </p>
         </div>
     </header>
@@ -45,14 +46,14 @@
         <div class="menu">
             <!-- LIVE STATISTICS -->
             <div class="menu__stats">
-                <div class="menu__stat">
+                <div class="menu__stat" data-wpm>
                     <p class="menu__label text-preset-3">WPM:</p>
-                    <p class="menu__value text-preset-2">0</p>
+                    <p class="menu__value text-preset-2" data-value>0</p>
                 </div>
                 <div class="menu__divider"></div>
-                <div class="menu__stat menu__stat--accuracy is-perfect">
+                <div class="menu__stat menu__stat--accuracy is-perfect" data-accuracy>
                     <p class="menu__label text-preset-3">Accuracy:</p>
-                    <p class="menu__value text-preset-2">100%</p>
+                    <p class="menu__value text-preset-2" data-value>100%</p>
                 </div>
                 <div class="menu__divider"></div>
                 <div class="menu__stat menu__stat--time" data-time>
@@ -176,22 +177,22 @@
                 </p>
             </div>
             <div class="results__stats">
-                <div class="results__stat">
+                <div class="results__stat" data-result-wpm>
                     <p class="results__label text-preset-3">WPM:</p>
-                    <p class="results__value text-preset-2">0</p>
+                    <p class="results__value text-preset-2" data-value>0</p>
                 </div>
-                <div class="results__stat results__stat--accuracy is-perfect">
+                <div class="results__stat results__stat--accuracy is-perfect" data-result-accuracy>
                     <p class="results__label text-preset-3">Accuracy:</p>
-                    <p class="results__value text-preset-2">100%</p>
+                    <p class="results__value text-preset-2" data-value>100%</p>
                 </div>
-                <div class="results__stat results__stat--characters">
+                <div class="results__stat results__stat--characters" data-characters>
                     <p class="results__label text-preset-3">Characters</p>
                     <p class="results__value text-preset-2">
-                        <span class="results__correct">0</span>/<span class="results__incorrect">0</span>
+                        <span class="results__correct" data-correct>0</span>/<span class="results__incorrect" data-incorrect>0</span>
                     </p>
                 </div>
             </div>
-            <button class="btn btn--secondary btn--secondary-light text-preset-3-semibold">
+            <button class="btn btn--secondary btn--secondary-light text-preset-3-semibold" data-restart-btn>
                 Go Again
                 <img class="restart-icon" src="./public/images/icon-restart-dark.svg" alt="">
             </button>
@@ -207,22 +208,22 @@
                 </p>
             </div>
             <div class="results__stats">
-                <div class="results__stat">
+                <div class="results__stat" data-result-wpm>
                     <p class="results__label text-preset-3">WPM:</p>
-                    <p class="results__value text-preset-2">0</p>
+                    <p class="results__value text-preset-2" data-value>0</p>
                 </div>
-                <div class="results__stat results__stat--accuracy is-perfect">
+                <div class="results__stat results__stat--accuracy is-perfect" data-result-accuracy>
                     <p class="results__label text-preset-3">Accuracy:</p>
-                    <p class="results__value text-preset-2">100%</p>
+                    <p class="results__value text-preset-2" data-value>100%</p>
                 </div>
-                <div class="results__stat results__stat--characters">
+                <div class="results__stat results__stat--characters" data-characters>
                     <p class="results__label text-preset-3">Characters</p>
                     <p class="results__value text-preset-2">
-                        <span class="results__correct">0</span>/<span class="results__incorrect">0</span>
+                        <span class="results__correct" data-correct>0</span>/<span class="results__incorrect" data-incorrect>0</span>
                     </p>
                 </div>
             </div>
-            <button class="btn btn--secondary btn--secondary-light text-preset-3-semibold">
+            <button class="btn btn--secondary btn--secondary-light text-preset-3-semibold" data-restart-btn>
                 Beat This Score
                 <img class="restart-icon" src="./public/images/icon-restart-dark.svg" alt="">
             </button>
@@ -238,22 +239,22 @@
                 </p>
             </div>
             <div class="results__stats">
-                <div class="results__stat">
+                <div class="results__stat" data-result-wpm>
                     <p class="results__label text-preset-3">WPM:</p>
-                    <p class="results__value text-preset-2">0</p>
+                    <p class="results__value text-preset-2" data-value>0</p>
                 </div>
-                <div class="results__stat results__stat--accuracy is-perfect">
+                <div class="results__stat results__stat--accuracy is-perfect" data-result-accuracy>
                     <p class="results__label text-preset-3">Accuracy:</p>
-                    <p class="results__value text-preset-2">100%</p>
+                    <p class="results__value text-preset-2" data-value>100%</p>
                 </div>
-                <div class="results__stat results__stat--characters">
+                <div class="results__stat results__stat--characters" data-characters>
                     <p class="results__label text-preset-3">Characters</p>
                     <p class="results__value text-preset-2">
-                        <span class="results__correct">0</span>/<span class="results__incorrect">0</span>
+                        <span class="results__correct" data-correct>0</span>/<span class="results__incorrect" data-incorrect>0</span>
                     </p>
                 </div>
             </div>
-            <button class="btn btn--secondary btn--secondary-light text-preset-3-semibold">
+            <button class="btn btn--secondary btn--secondary-light text-preset-3-semibold" data-restart-btn>
                 Beat This Score
                 <img class="restart-icon" src="./public/images/icon-restart-dark.svg" alt="">
             </button>
@@ -262,7 +263,7 @@
 
     <!-- SITE FOOTER -->
     <footer class="site-footer">
-        <button class="btn btn--secondary btn--secondary-dark text-preset-3-semibold">
+        <button class="btn btn--secondary btn--secondary-dark text-preset-3-semibold" data-restart-btn>
             Restart Test
             <img class="restart-icon" src="./public/images/icon-restart-light.svg" alt="">
         </button>
