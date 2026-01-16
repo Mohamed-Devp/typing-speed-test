@@ -268,12 +268,32 @@ img {
     padding: var(--spacing-200) var(--spacing-300);
     border-radius: var(--radius-12);
     color: hsl(var(--neutral-0));
+    background-color: hsl(var(--blue-600));
+    transition: background-color 0.15s ease-in;
+}
+
+.btn--primary:hover {
     background-color: hsl(var(--blue-400));
+}
+
+.btn--primary:focus-visible {
+    outline-offset: 3px;
+    outline: 2px solid hsl(var(--blue-400));
 }
 
 .btn--secondary {
     padding: var(--spacing-200);
     border-radius: var(--radius-12);
+    transition: opacity 0.15s ease-in;
+}
+
+.btn--secondary:hover {
+    opacity: 0.9;
+}
+
+.btn--secondary:focus-visible {
+    outline-offset: 3px;
+    outline: 2px solid hsl(var(--blue-400));
 }
 
 .btn--secondary-light {
@@ -297,9 +317,20 @@ img {
     border: 1px solid hsl(var(--neutral-500));
     border-radius: var(--radius-8);
     color: hsl(var(--neutral-0));
+    transition: color 0.15s ease-in, border-color 0.15s ease-in;
 }
 
-.btn--select.is-active {
+.btn--select:hover {
+    color: hsl(var(--blue-400));
+    border-color: hsl(var(--blue-400));
+}
+
+.btn--select:has(input:focus-visible) {
+    outline-offset: 2px;
+    outline: 2px solid hsl(var(--blue-400));
+}
+
+.btn--select:has(input:checked) {
     color: hsl(var(--blue-400));
     border-color: hsl(var(--blue-400));
 }
@@ -321,12 +352,17 @@ img {
     background-color: hsl(var(--neutral-900));
 }
 
-.btn--radio.is-active {
+.btn--radio:has(input:focus-visible) {
+    outline-offset: 2px;
+    outline: 2px solid hsl(var(--blue-400));
+}
+
+.btn--radio:has(input:checked) {
     border-color: transparent;
     background-color: hsl(var(--blue-400));
 }
 
-.btn--radio.is-active::before {
+.btn--radio:has(input:checked)::before {
     opacity: 1;
 }
 
@@ -344,6 +380,11 @@ img {
     border: 1px solid hsl(var(--neutral-500));
     border-radius: var(--radius-8);
     color: hsl(var(--neutral-0));
+}
+
+.dropdown__toggle:focus-visible {
+    outline-offset: 2px;
+    outline: 2px solid hsl(var(--blue-400));
 }
 
 .dropdown__value {
@@ -542,8 +583,16 @@ img {
     white-space: pre-wrap;
 }
 
+.passage__content:hover {
+    filter: blur(6px);
+}
+
 .is-focused .passage__content {
     color: hsl(var(--neutral-400));
+    filter: none;
+}
+
+.is-focused .passage__content:hover {
     filter: none;
 }
 
@@ -571,6 +620,10 @@ img {
     gap: var(--spacing-200);
     color: hsl(var(--neutral-0));
     pointer-events: none;
+}
+
+.is-loading .passage__intro, .is-focused .passage__intro {
+    display: none;
 }
 
 .passage__icon {
@@ -925,5 +978,11 @@ img {
     .results__stats {
         gap: var(--spacing-200);
         padding: 0 0 var(--spacing-200) 0;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .btn, .dropdown__toggle {
+        transition: none;
     }
 }
