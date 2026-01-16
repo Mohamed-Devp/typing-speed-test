@@ -1,3 +1,5 @@
+const timeValueEl = document.querySelector('[data-time] [data-value]');
+
 const difficultyDesktopRadios = document.querySelectorAll('input[name="difficulty-desktop"]');
 const difficultyMobileRadios = document.querySelectorAll('input[name="difficulty-mobile"]');
 
@@ -16,6 +18,10 @@ const passageContentEl = document.querySelector('[data-passage-content]');
 const passageMeasurer = document.querySelector('[data-passage-measurer]');
 
 const VISIBLE_LINES = 12;
+
+let timerId;
+let elapsed = 0;
+let isRunning = false;
 
 let difficulty = 'easy';
 let duration = 60;
@@ -119,10 +125,46 @@ async function updatePassage() {
     updatePassageView();
 }
 
+function updateTimeView(seconds) {
+    const minutes = Math.floor(seconds / 60);
+    const remainder = seconds % 60;
+  
+    timeValueEl.textContent = `${minutes}:${String(remainder).padStart(2, '0')}`;
+}
+
+function clearTimer() {
+    isRunning = false;
+  
+    document.body.classList.remove('is-running');
+  
+    clearInterval(timerId);
+}
+
+function startTimer() {
+    isRunning = true;
+  
+    document.body.classList.add('has-started', 'is-running');
+  
+    timerId = setInterval(() => {
+        elapsed += 1;
+        
+        updateTimeView(duration > 0 ? duration - elapsed : elapsed);
+        
+        if (elapsed === duration) {
+            clearTimer();
+        }
+    }, 1000);
+}
+
 function startNewTest() {
+    elapsed = 0;
+
     currentLine = 0;
     currentChar = 0;
 
+    document.body.classList.remove('has-started');
+
+    updateTimeView(duration);
     updatePassage().catch(error => {
         console.error(error.message);
     });
