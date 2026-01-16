@@ -1,3 +1,5 @@
+const timeValueEl = document.querySelector('[data-time] [data-value]');
+
 const difficultyDesktopRadios = document.querySelectorAll('input[name="difficulty-desktop"]');
 const difficultyMobileRadios = document.querySelectorAll('input[name="difficulty-mobile"]');
 
@@ -14,8 +16,13 @@ const modeValueEl = document.querySelector('[data-mode-dropdown] [data-value]');
 
 const passageContentEl = document.querySelector('[data-passage-content]');
 const passageMeasurer = document.querySelector('[data-passage-measurer]');
+const passageTextarea = document.querySelector('textarea[name="passage"]');
 
 const VISIBLE_LINES = 12;
+
+let timerId;
+let elapsed = 0;
+let isRunning = false;
 
 let difficulty = 'easy';
 let duration = 60;
@@ -23,6 +30,10 @@ let duration = 60;
 let lines;
 let currentLine = 0;
 let currentChar = 0;
+
+let previous = '';
+let correctChars = 0;
+let incorrectChars = 0;
 
 /* ===== Split the given text into lines based on how it's rendered in a container ===== */
 function measureLines(text, measurer) {
@@ -119,10 +130,120 @@ async function updatePassage() {
     updatePassageView();
 }
 
+function updateTimeView(seconds) {
+    const minutes = Math.floor(seconds / 60);
+    const remainder = seconds % 60;
+  
+    timeValueEl.textContent = `${minutes}:${String(remainder).padStart(2, '0')}`;
+}
+
+function clearTimer() {
+    isRunning = false;
+  
+    document.body.classList.remove('is-running');
+  
+    clearInterval(timerId);
+}
+
+function startTimer() {
+    isRunning = true;
+  
+    document.body.classList.add('has-started', 'is-running');
+  
+    timerId = setInterval(() => {
+        elapsed += 1;
+        
+        updateTimeView(duration > 0 ? duration - elapsed : elapsed);
+        
+        if (elapsed === duration) {
+            clearTimer();
+        }
+    }, 1000);
+}
+
+function updateState(lineIndex, charIndex, state) {
+    const charSpan = document.querySelector(`[data-line="${lineIndex}"] [data-char="${charIndex}"]`);
+  
+    if (charSpan) {
+        charSpan.classList.toggle(state);
+    }
+    
+    return charSpan;
+}
+
+function processChar(char) {
+    updateState(currentLine, currentChar, 'is-highlighted');
+  
+    const targetChar = lines[currentLine][currentChar];
+  
+    if (char === targetChar) {
+        updateState(currentLine, currentChar, 'is-correct');
+        correctChars += 1;
+    }
+    else {
+        updateState(currentLine, currentChar, 'is-incorrect');
+        incorrectChars += 1;
+    }
+  
+    currentChar += 1;
+    
+    if (currentChar >= lines[currentLine].length) {
+        currentChar = 0;
+        currentLine += 1;
+        
+        if (currentLine >= lines.length) {
+            clearTimer();
+        }
+        else {
+            updatePassageView();
+        }
+    }
+    
+    updateState(currentLine, currentChar, 'is-highlighted');
+}
+
+function handleBackspace() {
+    updateState(currentLine, currentChar, 'is-highlighted');
+    
+    currentChar -= 1;
+    
+    if (currentChar < 0) {
+        currentLine -= 1;
+        
+        if (currentLine < 0) {
+            currentChar = 0;
+            currentLine = 0;
+        }
+        else {
+            currentChar = lines[currentLine].length - 1;
+        }
+    }
+  
+    const charSpan = updateState(currentLine, currentChar, 'is-highlighted');
+    
+    if (charSpan.classList.contains('is-correct')) {
+        charSpan.classList.remove('is-correct');
+        correctChars -= 1;
+    }
+    else {
+        charSpan.classList.remove('is-incorrect');
+        incorrectChars -= 1;
+    }
+}
+
 function startNewTest() {
+    elapsed = 0;
+
     currentLine = 0;
     currentChar = 0;
 
+    previous = '';
+    correctChars = 0;
+    incorrectChars = 0;
+
+    document.body.classList.remove('has-started');
+
+    updateTimeView(duration);
     updatePassage().catch(error => {
         console.error(error.message);
     });
@@ -216,6 +337,57 @@ modeToggleBtn.addEventListener('click', () => {
 
     modeDropdown.classList.toggle('is-open');
     modeToggleBtn.setAttribute('aria-expanded', !isOpen);
+});
+
+passageTextarea.addEventListener('focus', () => {
+    document.body.classList.add('is-focused');
+    updateState(currentLine, currentChar, 'is-highlighted');
+});
+
+passageTextarea.addEventListener('blur', () => {
+    clearTimer();
+    
+    document.body.classList.remove('is-focused');
+    updateState(currentLine, currentChar, 'is-highlighted');
+});
+
+passageTextarea.addEventListener('past', e => {
+    e.preventDefault();
+});
+
+passageTextarea.addEventListener('keydown', e => {
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'a') {
+        e.preventDefault();
+    }
+});
+
+passageTextarea.addEventListener('input', () => {
+    if (!isRunning) {
+        startTimer();
+    }
+    
+    const current = passageTextarea.value;
+    
+    if (current.length < previous.length) {
+        handleBackspace();
+    }
+    else {
+        const difference = current.slice(previous.length);
+        
+        for (const char of difference) {
+            processChar(char);
+        };
+    }
+    
+    previous = current;
+});
+
+passageContentEl.addEventListener('mousedown', (e) => {
+    e.preventDefault();
+});
+
+passageContentEl.addEventListener('click', () => {
+    passageTextarea.focus();
 });
 
 document.addEventListener('click', event => {
