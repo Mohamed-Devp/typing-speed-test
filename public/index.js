@@ -5,7 +5,8 @@ const WPMSpan = document.querySelector('[data-wpm] [data-value]');
 const accuracyEl = document.querySelector('[data-accuracy]');
 const accuracySpan = document.querySelector('[data-accuracy] [data-value]');
 
-const timeSpan = document.querySelector('[data-time] [data-value]');
+const timeSpan = document.getElementById('time-value');
+const timeStatus = document.getElementById('time-status');
 
 const difficultyDesktopRadios = document.querySelectorAll('input[name="difficulty-desktop"]');
 const difficultyMobileRadios = document.querySelectorAll('input[name="difficulty-mobile"]');
@@ -157,30 +158,51 @@ function updateTimeView(seconds) {
     timeSpan.textContent = `${minutes}:${String(remainder).padStart(2, '0')}`;
 }
 
-function clearTimer() {
+function startTimer() {
+    isRunning = true;
+
+    document.body.classList.add('has-started', 'is-running');
+
+    timeStatus.textContent = 'Timer started.';
+
+    timerId = setInterval(() => {
+        elapsed += 1;
+
+        updateTimeView(duration > 0 ? duration - elapsed : elapsed);
+
+        if (elapsed === duration) {
+            endTimer();
+        }
+        else if (elapsed % 10 === 0) { // Update the time status after each 10 seconds
+            timeStatus.textContent = duration > 0 
+                ? `${duration - elapsed} seconds left.`
+                : `${elapsed} seconds have passed.`;
+        }
+    }, 1000);
+}
+
+function pauseTimer() {
+    clearInterval(timerId);
+
     isRunning = false;
   
     document.body.classList.remove('is-running');
-  
-    clearInterval(timerId);
+
+    timeStatus.textContent = duration > 0 
+        ? `Timer paused. ${duration - elapsed} seconds left.` 
+        : `Timer paused. ${elapsed} seconds have passed.`;
 }
 
-function startTimer() {
-    isRunning = true;
-  
-    document.body.classList.add('has-started', 'is-running');
-  
-    timerId = setInterval(() => {
-        elapsed += 1;
-        
-        updateStats();
-        updateStatsView();
-        
-        if (elapsed === duration) {
-            clearTimer();
-            showResults();
-        }
-    }, 1000);
+function endTimer() {
+    clearInterval(timerId);
+
+    isRunning = false;
+
+    document.body.classList.remove('is-running');
+
+    timeStatus.textContent = 'Timer ended.';
+
+    showResults();
 }
 
 function updateState(lineIndex, charIndex, state) {
@@ -214,8 +236,7 @@ function processChar(char) {
         currentLine += 1;
         
         if (currentLine >= lines.length) {
-            clearTimer();
-            showResults();
+            endTimer();
         }
         else {
             updatePassageView();
@@ -332,7 +353,7 @@ function updatePersonalBestView() {
     });
 }
 
-function startNewTest() {
+function startTest() {
     elapsed = 0;
 
     currentLine = 0;
@@ -346,7 +367,6 @@ function startNewTest() {
     accuracy = 100;
 
     document.body.classList.remove('has-started', 'is-complete', 'is-new-best', 'is-first-test');
-
     passageTextarea.value = '';
 
     updateStatsView();
@@ -369,7 +389,7 @@ difficultyDesktopRadios.forEach(radio => {
             }
         });
 
-        startNewTest(); 
+        startTest(); 
     });
 });
 
@@ -391,7 +411,7 @@ difficultyMobileRadios.forEach(radio => {
             }
         });
 
-        startNewTest();
+        startTest();
     });
 });
 
@@ -407,7 +427,7 @@ modeDesktopRadios.forEach(radio => {
             }
         });
 
-        startNewTest();
+        startTest();
     })
 });
 
@@ -429,7 +449,7 @@ modeMobileRadios.forEach(radio => {
             }
         });
 
-        startNewTest();
+        startTest();
     });
 });
 
@@ -453,8 +473,7 @@ passageTextarea.addEventListener('focus', () => {
 });
 
 passageTextarea.addEventListener('blur', () => {
-    clearTimer();
-    
+    pauseTimer();
     document.body.classList.remove('is-focused');
     updateState(currentLine, currentChar, 'is-highlighted');
 });
@@ -499,7 +518,7 @@ passageContentEl.addEventListener('click', () => {
 });
 
 restartBtns.forEach(button => {
-    button.addEventListener('click', startNewTest);
+    button.addEventListener('click', startTest);
 });
 
 document.addEventListener('click', event => {
@@ -514,4 +533,4 @@ document.addEventListener('click', event => {
     }
 });
 
-startNewTest();
+startTest();
