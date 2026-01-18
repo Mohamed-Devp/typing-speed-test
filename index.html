@@ -56,9 +56,10 @@
                     <p class="menu__value text-preset-2" data-value>100%</p>
                 </div>
                 <div class="menu__divider"></div>
-                <div class="menu__stat menu__stat--time" data-time>
+                <div class="menu__stat menu__stat--time" id="time">
                     <p class="menu__label text-preset-3">Time:</p>
-                    <p class="menu__value text-preset-2" data-value>0:00</p>
+                    <p class="menu__value text-preset-2" id="time-value">0:00</p>
+                    <p class="visually-hidden" id="time-status" aria-live="polite"></p>
                 </div>
             </div>
 
@@ -153,17 +154,10 @@
 
         <!-- PASSAGE -->
         <div class="passage">
-            <p class="passage__content text-preset-1-regular" data-passage-content></p>
-            <p class="passage__content passage__content--measurer text-preset-1-regular" aria-hidden="true" data-passage-measurer></p>
-            <div class="passage__intro text-preset-3-semibold">
-                <img class="passage__icon passage__icon--arrow" src="./public/images/arrow-pointer.svg" alt="">
-                <img class="passage__icon passage__icon--hand" src="./public/images/hand-pointer.svg" alt="">
-                Click the text and start typing
+            <div class="passage__viewport" id="passage-viewport">
+                <p class="passage__content text-preset-1-regular" id="passage-content"></p>
             </div>
-            <label class="visually-hidden">
-                <textarea name="passage"></textarea>
-                Start typing
-            </label>
+            <textarea class="passage__textarea" id="passage-textarea" name="passage"></textarea>
             <div class="passage__loader"></div>
         </div>
 

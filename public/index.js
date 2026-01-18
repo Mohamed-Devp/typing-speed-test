@@ -5,7 +5,8 @@ const WPMSpan = document.querySelector('[data-wpm] [data-value]');
 const accuracyEl = document.querySelector('[data-accuracy]');
 const accuracySpan = document.querySelector('[data-accuracy] [data-value]');
 
-const timeSpan = document.querySelector('[data-time] [data-value]');
+const timeSpan = document.getElementById('time-value');
+const timeStatus = document.getElementById('time-status');
 
 const difficultyDesktopRadios = document.querySelectorAll('input[name="difficulty-desktop"]');
 const difficultyMobileRadios = document.querySelectorAll('input[name="difficulty-mobile"]');
@@ -21,9 +22,9 @@ const modeDropdown = document.querySelector('[data-mode-dropdown]');
 const modeToggleBtn = document.querySelector('[data-mode-dropdown] [data-toggle-btn]');
 const modeValueEl = document.querySelector('[data-mode-dropdown] [data-value]');
 
-const passageContentEl = document.querySelector('[data-passage-content]');
-const passageMeasurer = document.querySelector('[data-passage-measurer]');
-const passageTextarea = document.querySelector('textarea[name="passage"]');
+const passageViewport = document.getElementById('passage-viewport');
+const passageContentEl = document.getElementById('passage-content');
+const passageTextarea = document.getElementById('passage-textarea');
 
 const resultWPMSpans = document.querySelectorAll('[data-result-wpm] [data-value]');
 
@@ -35,8 +36,6 @@ const incorrectCharsSpans = document.querySelectorAll('[data-characters] [data-i
 
 const restartBtns = document.querySelectorAll('[data-restart-btn');
 
-const VISIBLE_LINES = 12;
-
 let timerId;
 let elapsed = 0;
 let isRunning = false;
@@ -44,9 +43,8 @@ let isRunning = false;
 let difficulty = 'easy';
 let duration = 60;
 
-let lines;
-let currentLine = 0;
-let currentChar = 0;
+let passage;
+let currentIndex = 0;
 
 let previous = '';
 let correctChars = 0;
@@ -55,78 +53,16 @@ let incorrectChars = 0;
 let wordsPerMinute = 0;
 let accuracy = 100;
 
-/* ===== Split the given text into lines based on how it's rendered in a container ===== */
-function measureLines(text, measurer) {
-    measurer.innerHTML = '';
-    
-    const words = text.split(' ');
-    
-    const spans = words.map((word, index) => {
-        const span = document.createElement('span');
-        
-        if (index === words.length - 1) {
-            span.textContent = word;
-        }
-        else {
-            span.textContent = word + ' ';
-        }
-        
-        measurer.appendChild(span);
-        return span;
-    });
-  
-    const lines = [];
-    let currentLine = '';
-    let currentTop = spans[0].offsetTop;
-    
-    for (const span of spans) {
-        if (span.offsetTop !== currentTop) {
-            lines.push(currentLine);
-            currentLine = '';
-            currentTop = span.offsetTop;
-        }
-        
-        currentLine += span.textContent;
-    }
-    
-    if (currentLine.length) {
-        lines.push(currentLine);
-    }
-    
-    return lines;
-}
-
-function createPassageView() {    
-    let passageContentHTML = '';
-    
-    for (let i = 0; i < lines.length; i++) {
-        let lineContentHTML = '';
-        
-        for (let j = 0; j < lines[i].length; j++) {
-            lineContentHTML += `<span data-char="${j}">${lines[i][j]}</span>`;
-        }
-        
-        passageContentHTML += `<span data-line="${i}">${lineContentHTML}</span>`;
-    }
-    
-    passageContentEl.innerHTML = passageContentHTML;
-}
-
-/* ===== Show the current visible lines of the selected passage content ===== */
 function updatePassageView() {
-    if (lines.length - currentLine < VISIBLE_LINES) return;
-    
-    const endLine = currentLine + VISIBLE_LINES;
-    
-    for (let i = 0; i < lines.length; i++) {
-        const lineSpan = document.querySelector(`[data-line="${i}"]`);
-        
-        if (i >= currentLine && i < endLine) {
-            lineSpan.classList.remove('visually-hidden'); 
-        }
-        else {
-            lineSpan.classList.add('visually-hidden');
-        }
+    passageContentEl.innerHTML = '';
+
+    for (let i = 0; i < passage.length; i++) {
+        const span = document.createElement('span');
+
+        span.textContent = passage[i];
+        span.classList.add(`char-${i}`);
+
+        passageContentEl.appendChild(span);
     }
 }
 
@@ -142,11 +78,9 @@ async function updatePassage() {
 
     document.body.classList.remove('is-loading');
 
-    const passages = data[difficulty];
-    const index = Math.floor(Math.random() * passages.length);
+    const index = Math.floor(Math.random() * data[difficulty].length);
+    passage = data[difficulty][index].text;
 
-    lines = measureLines(passages[index].text, passageMeasurer);
-    createPassageView();
     updatePassageView();
 }
 
@@ -157,100 +91,142 @@ function updateTimeView(seconds) {
     timeSpan.textContent = `${minutes}:${String(remainder).padStart(2, '0')}`;
 }
 
-function clearTimer() {
-    isRunning = false;
-  
-    document.body.classList.remove('is-running');
-  
-    clearInterval(timerId);
-}
-
 function startTimer() {
     isRunning = true;
-  
+
     document.body.classList.add('has-started', 'is-running');
-  
+
+    timeStatus.textContent = 'Timer started.';
+
     timerId = setInterval(() => {
         elapsed += 1;
-        
+
+        updateTimeView(duration > 0 ? duration - elapsed : elapsed);
+
         updateStats();
         updateStatsView();
-        
+
         if (elapsed === duration) {
-            clearTimer();
-            showResults();
+            endTimer();
+        }
+        else if (elapsed % 10 === 0) { // Update the time status after each 10 seconds
+            timeStatus.textContent = duration > 0 
+                ? `${duration - elapsed} seconds left.`
+                : `${elapsed} seconds have passed.`;
         }
     }, 1000);
 }
 
-function updateState(lineIndex, charIndex, state) {
-    const charSpan = document.querySelector(`[data-line="${lineIndex}"] [data-char="${charIndex}"]`);
+function pauseTimer() {
+    clearInterval(timerId);
+
+    isRunning = false;
   
-    if (charSpan) {
-        charSpan.classList.toggle(state);
+    document.body.classList.remove('is-running');
+
+    timeStatus.textContent = duration > 0 
+        ? `Timer paused. ${duration - elapsed} seconds left.` 
+        : `Timer paused. ${elapsed} seconds have passed.`;
+}
+
+function endTimer() {
+    clearInterval(timerId);
+
+    isRunning = false;
+
+    document.body.classList.remove('is-running');
+
+    timeStatus.textContent = 'Timer ended.';
+
+    showResults();
+}
+
+function markAsHighlighted(index) {
+    if (index >= passage.length) return;
+
+    const span = document.querySelector(`.char-${index}`);
+    span.classList.toggle('is-highlighted');
+}
+
+function markAsCorrect(index) {
+    if (index >= passage.length) return;
+
+    const span = document.querySelector(`.char-${index}`);
+    span.classList.toggle('is-correct');
+}
+
+function markAsIncorrect(index) {
+    if (index >= passage.length) return;
+
+    const span = document.querySelector(`.char-${index}`);
+    span.classList.toggle('is-incorrect');
+}
+
+function keepSpanInView(index) {
+    if (index >= passage.length) return;
+
+    const span = document.querySelector(`.char-${index}`);
+
+    const spanRect = span.getBoundingClientRect();
+    const containerRect = passageViewport.getBoundingClientRect();
+
+    const offsetTop = spanRect.top - containerRect.top;
+    const offsetBottom = spanRect.bottom - containerRect.bottom;
+
+    if (offsetTop < 0) {
+        passageViewport.scrollTop += offsetTop - 32;
     }
-    
-    return charSpan;
+    else if (offsetBottom > 0) {
+        passageViewport.scrollTop += offsetBottom + 32;
+    }
 }
 
 function processChar(char) {
-    updateState(currentLine, currentChar, 'is-highlighted');
+    markAsHighlighted(currentIndex);
   
-    const targetChar = lines[currentLine][currentChar];
+    const targetChar = passage[currentIndex];
   
     if (char === targetChar) {
-        updateState(currentLine, currentChar, 'is-correct');
+        markAsCorrect(currentIndex);
         correctChars += 1;
     }
     else {
-        updateState(currentLine, currentChar, 'is-incorrect');
+        markAsIncorrect(currentIndex);
         incorrectChars += 1;
     }
   
-    currentChar += 1;
-    
-    if (currentChar >= lines[currentLine].length) {
-        currentChar = 0;
-        currentLine += 1;
-        
-        if (currentLine >= lines.length) {
-            clearTimer();
-            showResults();
-        }
-        else {
-            updatePassageView();
-        }
+    currentIndex += 1;
+
+    if (currentIndex >= passage.length) {
+        endTimer();
     }
-    
-    updateState(currentLine, currentChar, 'is-highlighted');
+    else {
+        markAsHighlighted(currentIndex);
+        keepSpanInView(currentIndex);
+    }
 }
 
 function handleBackspace() {
-    updateState(currentLine, currentChar, 'is-highlighted');
-    
-    currentChar -= 1;
-    
-    if (currentChar < 0) {
-        currentLine -= 1;
-        
-        if (currentLine < 0) {
-            currentChar = 0;
-            currentLine = 0;
-        }
-        else {
-            currentChar = lines[currentLine].length - 1;
-            updatePassageView();
-        }
-    }
-  
-    const charSpan = updateState(currentLine, currentChar, 'is-highlighted');
-    
-    if (charSpan.classList.contains('is-correct')) {
-        charSpan.classList.remove('is-correct');
-        correctChars -= 1;
+    markAsHighlighted(currentIndex);
+
+    currentIndex -= 1;
+
+    if (currentIndex < 0) {
+        currentIndex = 0;
     }
     else {
-        charSpan.classList.remove('is-incorrect');
+        markAsHighlighted(currentIndex);
+        keepSpanInView(currentIndex);
+    }
+
+    const span = document.querySelector(`.char-${currentIndex}`);
+
+    if (span.classList.contains('is-correct')) {
+        span.classList.remove('is-correct');
+        correctChars -= 1;
+    }
+    else if (span.classList.contains('is-incorrect')) {
+        span.classList.remove('is-incorrect');
         incorrectChars -= 1;
     }
 }
@@ -332,11 +308,10 @@ function updatePersonalBestView() {
     });
 }
 
-function startNewTest() {
+function startTest() {
     elapsed = 0;
 
-    currentLine = 0;
-    currentChar = 0;
+    currentIndex = 0;
 
     previous = '';
     correctChars = 0;
@@ -346,7 +321,6 @@ function startNewTest() {
     accuracy = 100;
 
     document.body.classList.remove('has-started', 'is-complete', 'is-new-best', 'is-first-test');
-
     passageTextarea.value = '';
 
     updateStatsView();
@@ -369,7 +343,7 @@ difficultyDesktopRadios.forEach(radio => {
             }
         });
 
-        startNewTest(); 
+        startTest(); 
     });
 });
 
@@ -391,7 +365,7 @@ difficultyMobileRadios.forEach(radio => {
             }
         });
 
-        startNewTest();
+        startTest();
     });
 });
 
@@ -407,7 +381,7 @@ modeDesktopRadios.forEach(radio => {
             }
         });
 
-        startNewTest();
+        startTest();
     })
 });
 
@@ -429,7 +403,7 @@ modeMobileRadios.forEach(radio => {
             }
         });
 
-        startNewTest();
+        startTest();
     });
 });
 
@@ -449,14 +423,13 @@ modeToggleBtn.addEventListener('click', () => {
 
 passageTextarea.addEventListener('focus', () => {
     document.body.classList.add('is-focused');
-    updateState(currentLine, currentChar, 'is-highlighted');
+    markAsHighlighted(currentIndex);
 });
 
 passageTextarea.addEventListener('blur', () => {
-    clearTimer();
-    
+    pauseTimer();
     document.body.classList.remove('is-focused');
-    updateState(currentLine, currentChar, 'is-highlighted');
+    markAsHighlighted(currentIndex);
 });
 
 passageTextarea.addEventListener('past', e => {
@@ -499,7 +472,7 @@ passageContentEl.addEventListener('click', () => {
 });
 
 restartBtns.forEach(button => {
-    button.addEventListener('click', startNewTest);
+    button.addEventListener('click', startTest);
 });
 
 document.addEventListener('click', event => {
@@ -514,4 +487,4 @@ document.addEventListener('click', event => {
     }
 });
 
-startNewTest();
+startTest();
